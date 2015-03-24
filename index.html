@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Tests</title>
+  <link rel="stylesheet" media="all" href="https://cdnjs.cloudflare.com/ajax/libs/mocha/2.2.1/mocha.min.css">
+</head>
+<body>
+  <div id="mocha"><p><a href=".">Index</a></p></div>
+  <div id="messages"></div>
+  <div id="content"></div>
+  <script id="layout-template" type="text/template">
+    <div id = "form"></div>
+    <div id = "saved-data"></div>
+  </script>
+  <script id="form-template" type="text/template">
+    <div class="messages"></div>
+    <form>
+      <input type=text name="category">
+      <input type=text name="time">
+      <input type=text name="value">
+      <input type=submit>
+    </form>
+  </script>
+  <script id="saved-data-template" type="text/template">
+   <td><%= category %></td>
+   <td><%= time %></td>
+   <td><%= value %></td>
+   <td><button class="delete"></button></td> 
+  </script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/sinon.js/1.7.3/sinon-min.js"></script>
+  <script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.2/underscore-min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/backbone.js/1.1.2/backbone-min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/backbone.marionette/2.4.1/backbone.marionette.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/backbone.validation/0.11.3/backbone-validation-min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mocha/2.2.1/mocha.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/chai/2.1.1/chai.min.js"></script>
+  <script src="../index.js"></script>
+  <script>mocha.setup('bdd')</script>
+  <script src="index.js"></script>
+  <script>mocha.run();</script>
+</body>
+</html>
