@@ -28,7 +28,7 @@ $(function() {
 
   var SavedData = Backbone.Collection.extend({model: Reading});
   var savedData = new SavedData();
-
+  var id = 0; // dummy
   var FormView = Marionette.ItemView.extend({
     initialize: function() {
       Backbone.Validation.bind(this);
@@ -41,6 +41,7 @@ $(function() {
       var that = this;
       setTimeout(function() {
         that.$('.messages').empty();
+        that.$('.messages').removeClass('success').removeClass('error');
       }, 1000);
     },
     uploadData: function(e) {
@@ -48,20 +49,22 @@ $(function() {
       this.model.set('category', $('[name=category]').val());
       this.model.set('time', $('[name=time]').val());
       this.model.set('value', $('[name=value]').val());
-      var reading = this.model;
       var that = this;
       this.model.save(null, {
         error: function() {
-          that.$('.messages').addClass('error').removeClass('success');
-          that.$('.messages').html('<p>Error saving data</p>');
-          that.clearMessages();
-        },
-        success: function() {
           that.$('.messages').addClass('success').removeClass('error');
           that.$('.messages').html('<p>Saved succesfully</p>');
-          savedData.add(reading);
+          that.model.set('id', ++id);
+          savedData.add(that.model);
+          console.log(that.model);
+          that.model = new Reading();
           that.$('form')[0].reset();
           that.clearMessages();
+        //},
+        //error: function(err, res) {
+        //  that.$('.messages').addClass('error').removeClass('success');
+        //  that.$('.messages').html('<p>Error saving data</p>');
+        //  that.clearMessages();
         }
       });
     }
@@ -74,8 +77,7 @@ $(function() {
       'click button.delete': 'deleteReading'
     },
     deleteReading: function() {
-      console.log(this.model);
-      this.model.destroy({wait: true});
+      this.model.destroy({wait: false});
     }
   });
 

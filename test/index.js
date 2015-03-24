@@ -97,6 +97,14 @@ describe('On submitting form with valid data', function() {
     it('Third cell should contain value', function() {
       expect($('#saved-data td').eq(2).html()).to.equal(value);
     });
+    it('Submitting form again should create another row', function() {
+      $('[name=category]').val(category);
+      $('[name=time]').val(time);
+      $('[name=value]').val(value);
+      $('form input[type=submit]').click();
+      server.respond();
+      expect($('#saved-data tr').length).to.equal(2);
+    });
     describe('Deleting saved data', function() {
       it('Clicking delete should send an ajax DELETE request', function() {
         $.ajax.reset();
@@ -106,13 +114,13 @@ describe('On submitting form with valid data', function() {
       it('But should not remove the item if it returns an error', function() {
         server.respondWith([405, {'Content-Type': 'text/html'}, '{"error": "foo"}']);
         server.respond();
-        expect($('#saved-data tr').length).to.equal(1);
+        expect($('#saved-data tr').length).to.equal(2);
       });
       it('Should remove if delete is successful', function() {
         server.respondWith([200, {'Content-Type': 'text/html'}, '{"it\'s": "gone"}']);
         $('#saved-data td').eq(3).find('button.delete').click();
         server.respond();
-        expect($('#saved-data tr').length).to.equal(0);
+        expect($('#saved-data tr').length).to.equal(1);
       });
     });
   });

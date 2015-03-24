@@ -1,0 +1,12 @@
+.messages {
+  height: 100px;
+  overflow: hidden;
+}
+
+.success {
+  background-color: green;
+}
+
+.error {
+  background-color: red;
+}
