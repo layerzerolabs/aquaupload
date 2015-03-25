@@ -37,7 +37,6 @@ $(function() {
 
   var SavedData = Backbone.Collection.extend({model: Reading});
   var savedData = new SavedData();
-  var id = 0; // TODO
   var FormView = Marionette.ItemView.extend({
     initialize: function() {
       Backbone.Validation.bind(this);
@@ -53,9 +52,9 @@ $(function() {
       this.model.set('value', $('[name=value]').val());
       var that = this;
       this.model.save(null, {
-        success: function() {
+        success: function(model) {
           showMessage('success', 'Saved');
-          that.model.set('id', ++id); //TODO
+          console.log(that.model);
           savedData.add(that.model);
           that.model = new Reading();
           that.$('form')[0].reset();

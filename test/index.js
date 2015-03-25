@@ -58,12 +58,16 @@ describe('On submitting form with valid data', function() {
     });
   });
   describe('On getting success response from server', function() {
-    before(function() {
-      server.respondWith([200, {'Content-Type': 'text/html'}, '{"id": "someid"}']);
-      $('form input[type=submit]').click();
-      server.respond();
+    beforeEach(function() {
+      server.respondWith([
+          200,
+          {'Content-Type': 'text/html'},
+          '{"id": '+Math.floor(Math.random()*1000)+ '}'
+      ]);
     }); 
     it('should clear form', function() {
+      $('form input[type=submit]').click();
+      server.respond();
       $('form input[type=text]').each(function() {
         expect($(this).val()).to.equal('');
       });
