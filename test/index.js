@@ -24,17 +24,22 @@ describe('Form validation', function() {
     $('form input[type=submit]').click();
     expect($('.invalid').length).to.equal(3);
   });
+  it('Non-date for reading time should cause error', function() {
+    $('[name=reading_time]').val('foo');
+    $('form input[type=submit]').click();
+    expect($('.invalid').length).to.equal(3);
+  });
 });
 
 describe('On submitting form with valid data', function() {
   var server;
-  var category = 'Fires', time = new Date(), value = 'Many';
+  var sensor_name = 'Fires', reading_time = new Date(), reading_value = 'Many';
   before(function() {
     server = sinon.fakeServer.create();
     sinon.spy($, "ajax");
-    $('[name=category]').val(category);
-    $('[name=time]').val(time);
-    $('[name=value]').val(value);
+    $('[name=sensor_name]').val(sensor_name);
+    $('[name=reading_time]').val(reading_time);
+    $('[name=reading_value]').val(reading_value);
   });
   it('Should not show validation errors', function() {
     $('form input[type=submit]').click();
@@ -47,6 +52,10 @@ describe('On submitting form with valid data', function() {
   it('Which should be a POST request', function() {
     $('form input[type=submit]').click();
     expect($.ajax.getCall(0).args[0].type).to.equal('POST');
+  });
+  it('The URL should be localhost:8003/todmorden?api_key=OoheiN8uyaiB7Iefahloo3aZAu3Ahnah', function() {
+      console.log($.ajax.getCall(0).args[0].url);
+    expect($.ajax.getCall(0).args[0].url).to.equal('http://localhost:8003/todmorden?api_key=OoheiN8uyaiB7Iefahloo3aZAu3Ahnah');
   });
   describe('On getting error response from server', function() {
     it('If post not successful, should display error message', function() {
@@ -86,19 +95,19 @@ describe('On submitting form with valid data', function() {
     it('Last cell should be a delete button', function() {
       expect($('#saved-data td').eq(3).find('button.delete').length).to.equal(1);
     });
-    it('First cell should contain category', function() {
-      expect($('#saved-data td').eq(0).html()).to.equal(category);
+    it('First cell should contain sensor_name', function() {
+      expect($('#saved-data td').eq(0).html()).to.equal(sensor_name);
     });
-    it('Second cell should contain time', function() {
-      expect($('#saved-data td').eq(1).html()).to.equal(time.toString());
+    it('Second cell should contain reading_time', function() {
+      expect($('#saved-data td').eq(1).html()).to.equal(reading_time.toString());
     });
-    it('Third cell should contain value', function() {
-      expect($('#saved-data td').eq(2).html()).to.equal(value);
+    it('Third cell should contain reading_value', function() {
+      expect($('#saved-data td').eq(2).html()).to.equal(reading_value);
     });
     it('Submitting form again should create another row', function() {
-      $('[name=category]').val(category);
-      $('[name=time]').val(time);
-      $('[name=value]').val(value);
+      $('[name=sensor_name]').val(sensor_name);
+      $('[name=reading_time]').val(reading_time);
+      $('[name=reading_value]').val(reading_value);
       $('form input[type=submit]').click();
       server.respond();
       expect($('#saved-data tr').length).to.equal(2);

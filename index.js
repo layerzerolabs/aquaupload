@@ -21,15 +21,16 @@ $(function() {
   });
 
   var Reading = Backbone.Model.extend({
-    urlRoot: '/',
+    urlRoot: 'http://localhost:8003/todmorden?api_key=OoheiN8uyaiB7Iefahloo3aZAu3Ahnah',
     validation: {
-      category: {
+      sensor_name: {
         required: true
       },
-      time: {
-        required: true
+      reading_time: {
+        required: true,
+        
       },
-      value: {
+      reading_reading_value: {
         required: true
       }
     }    
@@ -47,9 +48,9 @@ $(function() {
     },
     uploadData: function(e) {
       e.preventDefault();
-      this.model.set('category', $('[name=category]').val());
-      this.model.set('time', $('[name=time]').val());
-      this.model.set('value', $('[name=value]').val());
+      this.model.set('sensor_name', $('[name=sensor_name]').val());
+      this.model.set('reading_time', $('[name=reading_time]').val());
+      this.model.set('reading_reading_value', $('[name=reading_reading_value]').val());
       var that = this;
       this.model.save(null, {
         success: function(model) {
@@ -58,7 +59,6 @@ $(function() {
           savedData.add(that.model);
           that.model = new Reading();
           that.$('form')[0].reset();
-          that.clearMessages();
         },
         error: function(err, res) {
           showMessage('error', 'Not Saved');
