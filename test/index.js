@@ -53,8 +53,8 @@ describe('On submitting form with valid data', function() {
       server.respondWith([500, {'Content-Type': 'text/html'}, '{"some": "json"}']);
       $('form input[type=submit]').click();
       server.respond();
-      expect($('#form .messages').hasClass('error')).to.be.true;
-      expect($('#form .messages').hasClass('success')).to.be.false;
+      expect($('#message').hasClass('error')).to.be.true;
+      expect($('#message').hasClass('success')).to.be.false;
     });
   });
   describe('On getting success response from server', function() {
@@ -69,15 +69,9 @@ describe('On submitting form with valid data', function() {
       });
     });
     it('should display success message', function() {
-      expect($('#form .messages').hasClass('success')).to.be.true;
-      expect($('#form .messages').hasClass('error')).to.be.false;
-      expect($('#form .messages').is(':empty')).to.be.false;
-    });
-    it('should only display it for 1 second', function(done) {
-      setTimeout(function() {
-        expect($('#form .messages').is(':empty')).to.be.true;
-        done();
-      }, 1500);
+      expect($('#message').hasClass('success')).to.be.true;
+      expect($('#message').hasClass('error')).to.be.false;
+      expect($('#message').is(':empty')).to.be.false;
     });
     it('should add a row to the saved data list', function() {
       expect($('#saved-data tr').length).to.equal(1); 
@@ -116,11 +110,21 @@ describe('On submitting form with valid data', function() {
         server.respond();
         expect($('#saved-data tr').length).to.equal(2);
       });
+      it('And should show error message', function() {
+        expect($('#message').hasClass('error')).to.be.true;
+        expect($('#message').hasClass('success')).to.be.false;
+        expect($('#message').is(':empty')).to.be.false;
+      });
       it('Should remove if delete is successful', function() {
         server.respondWith([200, {'Content-Type': 'text/html'}, '{"it\'s": "gone"}']);
         $('#saved-data td').eq(3).find('button.delete').click();
         server.respond();
         expect($('#saved-data tr').length).to.equal(1);
+      });
+      it('And should show success message', function() {
+        expect($('#message').hasClass('error')).to.be.false;
+        expect($('#message').hasClass('success')).to.be.true;
+        expect($('#message').is(':empty')).to.be.false;
       });
     });
   });

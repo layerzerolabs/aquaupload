@@ -1,6 +1,15 @@
 $(function() {
     
   var app = new Marionette.Application();
+  
+  var showMessage =  function(cssClass, message) {
+    $('#message').removeClass().addClass(cssClass);
+    $('#message').html(message);
+    setTimeout(function() {
+      $('#message').empty();
+      $('#message').removeClass('success').removeClass('error');
+    }, 1000);
+  };
 
   var Layout = Backbone.Marionette.LayoutView.extend({
     el: '#content',
@@ -37,13 +46,6 @@ $(function() {
     events: {
       'submit form': 'uploadData'
     },
-    clearMessages: function() {
-      var that = this;
-      setTimeout(function() {
-        that.$('.messages').empty();
-        that.$('.messages').removeClass('success').removeClass('error');
-      }, 1000);
-    },
     uploadData: function(e) {
       e.preventDefault();
       this.model.set('category', $('[name=category]').val());
@@ -52,8 +54,7 @@ $(function() {
       var that = this;
       this.model.save(null, {
         success: function() {
-          that.$('.messages').addClass('success').removeClass('error');
-          that.$('.messages').html('<p>Saved succesfully</p>');
+          showMessage('success', 'Saved');
           that.model.set('id', ++id); //TODO
           savedData.add(that.model);
           that.model = new Reading();
@@ -61,9 +62,7 @@ $(function() {
           that.clearMessages();
         },
         error: function(err, res) {
-          that.$('.messages').addClass('error').removeClass('success');
-          that.$('.messages').html('<p>Error saving data</p>');
-          that.clearMessages();
+          showMessage('error', 'Not Saved');
         }
       });
     }
@@ -76,7 +75,15 @@ $(function() {
       'click button.delete': 'deleteReading'
     },
     deleteReading: function() {
-      this.model.destroy({wait: true});
+      this.model.destroy({
+        wait: true,
+        error: function(err, res) {
+          showMessage('error', 'Not deleted');
+        },
+        success: function(err, res) {
+          showMessage('success', 'Deleted');
+        }
+      });
     }
   });
 
