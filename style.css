@@ -1,6 +1,19 @@
-.messages {
+#message {
   height: 100px;
   overflow: hidden;
+}
+
+#form div {
+  display: inline-block;
+  padding: 10px;
+}
+
+label {
+  display: block;
+}
+
+.invalid {
+  border: 3px solid red;
 }
 
 .success {

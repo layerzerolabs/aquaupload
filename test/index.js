@@ -4,13 +4,17 @@ var expect = chai.expect;
 
 describe('Form', function() {
   it('Should appear on page', function() {
-     expect($('form').length).to.equal(1);
+    expect($('form').length).to.equal(1);
   });
-  it('Should have 3 text inputs', function() {
-     expect($('form input[type=text]').length).to.equal(3);
+  it('Should have 5 text inputs', function() {
+    expect($('form input[type=text]').length).to.equal(5);
+  });
+  it('Should have a datepicker', function() {
+    expect($('.ui-datepicker').length).to.equal(1);
+
   });
   it('Should have a submit button', function() {
-     expect($('form input[type=submit]').length).to.equal(1);
+    expect($('form input[type=submit]').length).to.equal(1);
   });
 });
 
@@ -22,23 +26,29 @@ describe('Saved data table', function() {
 describe('Form validation', function() {
   it('All fields should be required', function() {
     $('form input[type=submit]').click();
-    expect($('.invalid').length).to.equal(3);
+    expect($('.invalid').length).to.equal(5);
   });
-  it('Non-date for reading time should cause error', function() {
-    $('[name=reading_time]').val('foo');
+  it('Non-date for reading date should cause error', function() {
+    $('[name=reading_date]').val('foo');
     $('form input[type=submit]').click();
-    expect($('.invalid').length).to.equal(3);
+    expect($('.invalid').length).to.equal(5);
   });
 });
 
 describe('On submitting form with valid data', function() {
   var server;
-  var sensor_name = 'Fires', reading_time = new Date(), reading_value = 'Many';
+  var sensor_name = 'Fires',
+    reading_date = moment().format('D MMM YYYY'),
+    reading_hour = 13,
+    reading_minute = 20,
+    reading_value = 'Many';
   before(function() {
     server = sinon.fakeServer.create();
     sinon.spy($, "ajax");
     $('[name=sensor_name]').val(sensor_name);
-    $('[name=reading_time]').val(reading_time);
+    $('[name=reading_date]').val(reading_date);
+    $('[name=reading_hour]').val(reading_hour);
+    $('[name=reading_minute]').val(reading_minute);
     $('[name=reading_value]').val(reading_value);
   });
   it('Should not show validation errors', function() {
@@ -54,7 +64,6 @@ describe('On submitting form with valid data', function() {
     expect($.ajax.getCall(0).args[0].type).to.equal('POST');
   });
   it('The URL should be localhost:8003/todmorden?api_key=OoheiN8uyaiB7Iefahloo3aZAu3Ahnah', function() {
-      console.log($.ajax.getCall(0).args[0].url);
     expect($.ajax.getCall(0).args[0].url).to.equal('http://localhost:8003/todmorden?api_key=OoheiN8uyaiB7Iefahloo3aZAu3Ahnah');
   });
   describe('On getting error response from server', function() {
@@ -98,15 +107,17 @@ describe('On submitting form with valid data', function() {
     it('First cell should contain sensor_name', function() {
       expect($('#saved-data td').eq(0).html()).to.equal(sensor_name);
     });
-    it('Second cell should contain reading_time', function() {
-      expect($('#saved-data td').eq(1).html()).to.equal(reading_time.toString());
+    it('Second cell should contain reading_date', function() {
+      expect($('#saved-data td').eq(1).html()).to.equal(reading_date.toString());
     });
     it('Third cell should contain reading_value', function() {
       expect($('#saved-data td').eq(2).html()).to.equal(reading_value);
     });
     it('Submitting form again should create another row', function() {
       $('[name=sensor_name]').val(sensor_name);
-      $('[name=reading_time]').val(reading_time);
+      $('[name=reading_date]').val(reading_date);
+      $('[name=reading_hour]').val(reading_date);
+      $('[name=reading_minute]').val(reading_date);
       $('[name=reading_value]').val(reading_value);
       $('form input[type=submit]').click();
       server.respond();

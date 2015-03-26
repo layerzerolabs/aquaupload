@@ -3,30 +3,44 @@
 <head>
   <meta charset="utf-8">
   <title>Upload</title>
-  <link rel='stylesheet' href = 'style.css' />
+  <link rel='stylesheet' href = "https://code.jquery.com/ui/1.11.4/themes/cupertino/jquery-ui.css" />
+  <link rel='stylesheet' href = "style.css" />
 </head>
 <body>
+  <div id ="message"></div>
   <div id="content"></div>
   <script id="layout-template" type="text/template">
     <div id = "form"></div>
     <div id = "saved-data"></div>
   </script>
   <script id="form-template" type="text/template">
-    <div class="messages"></div>
     <form>
-      <input type=text name="sensor_name">
-      <input type=text name="reading_time">
-      <input type=text name="reading_reading_value">
-      <input type=submit>
+      <div>
+        <label>Measurement of:</label><input type=text name="sensor_name">
+      </div>
+      <div>
+        <label>Date:</label><input type=text name="reading_date">
+      </div>
+      <div>
+        <label>Time:</label><input type=text name="reading_hour">:<input type=text name="reading_minute">
+      </div>
+      <div>
+        <label>Value:</label><input type=text name="reading_value">
+      </div>
+      <div>
+        <input type=submit>
+      </div>
     </form>
   </script>
   <script id="saved-data-template" type="text/template">
    <td><%= sensor_name %></td>
-   <td><%= reading_time %></td>
-   <td><%= reading_reading_value %></td>
+   <td><%= reading_date %></td>
+   <td><%= reading_value %></td>
    <td><button class="delete"></button></td> 
   </script>
   <script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
+  <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.2/underscore-min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/backbone.js/1.1.2/backbone-min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/backbone.marionette/2.4.1/backbone.marionette.min.js"></script>

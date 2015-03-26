@@ -26,11 +26,21 @@ $(function() {
       sensor_name: {
         required: true
       },
-      reading_time: {
-        required: true,
-        
+      reading_date: function (val){
+        if (val === '') {
+          return 'Required';
+        }
+        if (!moment(val, 'D MMM YYYY').isValid()) {
+          return 'Must be a date in the format "1 Jan 2000"';
+        }
+      },    
+      reading_hour: {
+        required: true
       },
-      reading_reading_value: {
+      reading_minute: {
+        required: true
+      },
+      reading_value: {
         required: true
       }
     }    
@@ -42,6 +52,9 @@ $(function() {
     initialize: function() {
       Backbone.Validation.bind(this);
     },
+    onRender: function() {
+      this.$('input').eq(1).datepicker({dateFormat: 'd M yy'});
+    },
     template: '#form-template', 
     events: {
       'submit form': 'uploadData'
@@ -49,13 +62,14 @@ $(function() {
     uploadData: function(e) {
       e.preventDefault();
       this.model.set('sensor_name', $('[name=sensor_name]').val());
-      this.model.set('reading_time', $('[name=reading_time]').val());
-      this.model.set('reading_reading_value', $('[name=reading_reading_value]').val());
+      this.model.set('reading_date', $('[name=reading_date]').val());
+      this.model.set('reading_hour', $('[name=reading_hour]').val());
+      this.model.set('reading_minute', $('[name=reading_minute]').val());
+      this.model.set('reading_value', $('[name=reading_value]').val());
       var that = this;
       this.model.save(null, {
         success: function(model) {
           showMessage('success', 'Saved');
-          console.log(that.model);
           savedData.add(that.model);
           that.model = new Reading();
           that.$('form')[0].reset();
