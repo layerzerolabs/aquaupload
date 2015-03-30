@@ -22,45 +22,11 @@ $(function() {
 
   var Reading = Backbone.Model.extend({
     urlRoot: 'http://localhost:8003/todmorden?api_key=OoheiN8uyaiB7Iefahloo3aZAu3Ahnah',
-    validation: {
-      sensor_name: {
-        required: true
-      },
-      reading_date: function (val){
-        if (val === '') {
-          return 'Required';
-        }
-        if (!moment(val, 'D MMM YYYY').isValid()) {
-          return 'Must be a date in the format "1 Jan 2000"';
-        }
-      },    
-      reading_hour: {
-        required: true
-      },
-      reading_minute: {
-        required: true
-      },
-      reading_value: {
-        required: true
-      }
-    },
-    formatForAPI: function() {
-      var readingTime = moment(this.get('reading_date'), 'D MMM YYYY');
-      readingTime.hours(this.get('reading_hour'));
-      readingTime.minutes(this.get('reading_minute'));
-      this.set('reading_time', readingTime.format());
-      this.unset('reading_date');
-      this.unset('reading_hour');
-      this.unset('reading_minute');
-    }
   });
 
   var SavedData = Backbone.Collection.extend({model: Reading});
   var savedData = new SavedData();
   var FormView = Marionette.ItemView.extend({
-    initialize: function() {
-      Backbone.Validation.bind(this);
-    },
     onRender: function() {
       this.$('input').eq(1).datepicker({dateFormat: 'd M yy'});
     },
@@ -72,11 +38,11 @@ $(function() {
       e.preventDefault();
       this.model = new Reading();
       this.model.set('sensor_name', $('[name=sensor_name]').val());
-      this.model.set('reading_date', $('[name=reading_date]').val());
-      this.model.set('reading_hour', $('[name=reading_hour]').val());
-      this.model.set('reading_minute', $('[name=reading_minute]').val());
       this.model.set('reading_value', $('[name=reading_value]').val());
-      this.model.formatForAPI();
+      var readingTime = moment($('[name=reading_date]').val(), 'D MMM YYYY');
+      readingTime.hours($('[name=reading_hours]').val());
+      readingTime.minutes($('[name=reading_minutes]').val());
+      this.model.set('reading_time', readingTime.format());
       var that = this;
       this.model.save(null, {
         success: function(model) {
