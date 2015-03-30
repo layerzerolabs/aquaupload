@@ -24,7 +24,7 @@ describe('Saved data table', function() {
   });
 });
 describe('Form validation', function() {
- /* it('All fields should be required', function() {
+  it('All fields should be required', function() {
     $('form input[type=submit]').click();
     expect($('.invalid').length).to.equal(5);
   });
@@ -32,7 +32,7 @@ describe('Form validation', function() {
     $('[name=reading_date]').val('foo');
     $('form input[type=submit]').click();
     expect($('.invalid').length).to.equal(5);
-  }); */
+  });
 });
 
 describe('On submitting form with valid data', function() {
@@ -45,6 +45,7 @@ describe('On submitting form with valid data', function() {
     reading_minutes = 20,
     reading_value = 'Many';
   
+  // app should combine date and times into a datetime
   var expectedReadingTime = moment('3 Jan 2000 13:20', 'D MMM YYYY HH:mm');
 
   before(function() {
@@ -68,8 +69,8 @@ describe('On submitting form with valid data', function() {
     $('form input[type=submit]').click();
     expect($.ajax.getCall(0).args[0].type).to.equal('POST');
   });
-  it('The URL should be localhost:8003/todmorden?api_key=OoheiN8uyaiB7Iefahloo3aZAu3Ahnah', function() {
-    expect($.ajax.getCall(0).args[0].url).to.equal('http://localhost:8003/todmorden?api_key=OoheiN8uyaiB7Iefahloo3aZAu3Ahnah');
+  it('The URL should be localhost:8003/todmorden', function() {
+    expect($.ajax.getCall(0).args[0].url).to.equal('http://localhost:8003/todmorden');
   });
   it('The data sent should have sensor_name, reading_time  and reading_value properties', function() {
     var data  = JSON.parse($.ajax.getCall(0).args[0].data);

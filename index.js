@@ -1,4 +1,7 @@
 $(function() {
+  $(document).ajaxSend(function(e, xhr, options) {
+    xhr.setRequestHeader("x-api-key", 'OoheiN8uyaiB7Iefahloo3aZAu3Ahnah');
+  });
     
   var app = new Marionette.Application();
   
@@ -21,7 +24,7 @@ $(function() {
   });
 
   var Reading = Backbone.Model.extend({
-    urlRoot: 'http://localhost:8003/todmorden?api_key=OoheiN8uyaiB7Iefahloo3aZAu3Ahnah',
+    urlRoot: 'http://localhost:8003/todmorden',
   });
 
   var SavedData = Backbone.Collection.extend({model: Reading});
