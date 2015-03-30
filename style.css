@@ -1,13 +1,54 @@
 #message {
-  height: 100px;
+  height: 80px;
   overflow: hidden;
 }
 
 #form, #saved-data {
+  margin-top: 20px;
   float: left;
-  margin-left: 100px;
+  min-width: 200px;
+  padding: 40px;
+  margin-left: 5%;
   border: 1px solid gray;
   background-color: lightgray;
+}
+
+#form {
+  width: 25%;
+}
+
+#saved-data {
+  width: 50%;
+}
+
+table: {
+   background-color: white;
+}
+
+tr {
+  padding: 5px;
+}
+
+#saved-data tr:nth-child(odd) {
+  background-color: #ededed;
+}
+
+#saved-data tr:nth-child(even) {
+  background-color: #e4f1fb;
+}
+
+td.data {
+  padding: 7px;
+  width: 25%;
+}
+
+td {
+  width: 10%;
+  text-align: center;
+}
+
+button.delete {
+  color: blue;
 }
 
 #form div.fieldwrapper {
@@ -21,17 +62,23 @@ input {
 
 input[type=submit] {
   margin-top: 10px;
+  color: blue;
 }
 input.time {
   width: 20px;
 }
 
-.success {
-  background-color: green;
+#message {
+  text-align: center;
+  font-size: 3em;
 }
 
-#message.error {
-  background-color: red;
+.success {
+  color: green;
+}
+
+.error {
+  color: red;
 }
 
 label {
@@ -40,6 +87,5 @@ label {
 }
 
 label.error {
-  color: red;
   font-size: 0.8em;
 }

@@ -30,7 +30,7 @@
   </script>
   <script id="saved-data-template" type="text/template">
    <td><%= sensor_name %></td>
-   <td><%= reading_time %></td>
+   <td><%= moment(reading_time).format('D MMM YYYY H:mm') %></td>
    <td><%= reading_value %></td>
    <td><button class="delete"></button></td> 
   </script>

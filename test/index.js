@@ -155,9 +155,9 @@ describe('On submitting form with valid data', function() {
     it('First cell should contain sensor_name', function() {
       expect($('#saved-data td').eq(0).html()).to.equal(sensor_name);
     });
-   // it('Second cell should contain reading_time nicely formatted', function() {
-   //   expect($('#saved-data td').eq(1).html()).to.equal(moment(reading_time).format());
-   // });
+    it('Second cell should contain reading_time nicely formatted', function() {
+      expect($('#saved-data td').eq(1).html()).to.equal(moment(expectedReadingTime).format('D MMM YYYY HH:mm'));
+    });
     it('Third cell should contain reading_value', function() {
       expect($('#saved-data td').eq(2).html()).to.equal(reading_value);
     });

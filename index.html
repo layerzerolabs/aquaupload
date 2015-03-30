@@ -36,10 +36,10 @@
     </form>
   </script>
   <script id="saved-data-template" type="text/template">
-   <td><%= sensor_name %></td>
-   <td><%= reading_time %></td>
-   <td><%= reading_value %></td>
-   <td><button class="delete"></button></td> 
+   <td class='data'><%= sensor_name %></td>
+   <td class='data'><%= moment(reading_time).format('D MMM YYYY H:mm') %></td>
+   <td class='data'><%= reading_value %></td>
+   <td><button class="delete">Delete</button></td> 
   </script>
   <script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
   <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
