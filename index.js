@@ -43,7 +43,16 @@ $(function() {
       reading_value: {
         required: true
       }
-    }    
+    },
+    formatForAPI: function() {
+      var readingTime = moment(this.get('reading_date'), 'D MMM YYYY');
+      readingTime.hours(this.get('reading_hour'));
+      readingTime.minutes(this.get('reading_minute'));
+      this.set('reading_time', readingTime.format());
+      this.unset('reading_date');
+      this.unset('reading_hour');
+      this.unset('reading_minute');
+    }
   });
 
   var SavedData = Backbone.Collection.extend({model: Reading});
@@ -61,17 +70,18 @@ $(function() {
     },
     uploadData: function(e) {
       e.preventDefault();
+      this.model = new Reading();
       this.model.set('sensor_name', $('[name=sensor_name]').val());
       this.model.set('reading_date', $('[name=reading_date]').val());
       this.model.set('reading_hour', $('[name=reading_hour]').val());
       this.model.set('reading_minute', $('[name=reading_minute]').val());
       this.model.set('reading_value', $('[name=reading_value]').val());
+      this.model.formatForAPI();
       var that = this;
       this.model.save(null, {
         success: function(model) {
           showMessage('success', 'Saved');
           savedData.add(that.model);
-          that.model = new Reading();
           that.$('form')[0].reset();
         },
         error: function(err, res) {
