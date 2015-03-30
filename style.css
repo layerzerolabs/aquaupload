@@ -3,23 +3,43 @@
   overflow: hidden;
 }
 
-#form div {
-  display: inline-block;
+#form, #saved-data {
+  float: left;
+  margin-left: 100px;
+  border: 1px solid gray;
+  background-color: lightgray;
+}
+
+#form div.fieldwrapper {
   padding: 10px;
+  height: 60px;
 }
 
-label {
-  display: block;
+input {
+  padding: 5px;
 }
 
-.invalid {
-  border: 3px solid red;
+input[type=submit] {
+  margin-top: 10px;
+}
+input.time {
+  width: 20px;
 }
 
 .success {
   background-color: green;
 }
 
-.error {
+#message.error {
   background-color: red;
+}
+
+label {
+  display: block;
+  padding: 5px;
+}
+
+label.error {
+  color: red;
+  font-size: 0.8em;
 }

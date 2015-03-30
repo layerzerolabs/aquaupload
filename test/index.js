@@ -26,12 +26,32 @@ describe('Saved data table', function() {
 describe('Form validation', function() {
   it('All fields should be required', function() {
     $('form input[type=submit]').click();
-    expect($('.invalid').length).to.equal(5);
+    expect($('input.error').length).to.equal(5);
   });
-  it('Non-date for reading date should cause error', function() {
+  it('Reading date should have to be valid date', function() {
     $('[name=reading_date]').val('foo');
     $('form input[type=submit]').click();
-    expect($('.invalid').length).to.equal(5);
+    expect($('input.error').length).to.equal(5);
+  });
+  it('Hours should have to be number', function() {
+    $('[name=reading_hours]').val('foo');
+    $('form input[type=submit]').click();
+    expect($('input.error').length).to.equal(5);
+  });
+  it('Hours should have to be between 0 and 23', function() {
+    $('[name=reading_hours]').val(24);
+    $('form input[type=submit]').click();
+    expect($('input.error').length).to.equal(5);
+  });
+  it('Minutes should have to be number', function() {
+    $('[name=reading_hours]').val('foo');
+    $('form input[type=submit]').click();
+    expect($('input.error').length).to.equal(5);
+  });
+  it('Minutes should have to be between 0 and 59', function() {
+    $('[name=reading_minutes]').val(60);
+    $('form input[type=submit]').click();
+    expect($('input.error').length).to.equal(5);
   });
 });
 
@@ -59,7 +79,7 @@ describe('On submitting form with valid data', function() {
   });
   it('Should not show validation errors', function() {
     $('form input[type=submit]').click();
-    expect($('.invalid').length).to.equal(0);
+    expect($('input.error').length).to.equal(0);
   });
   it('Should fire an ajax request', function() {
     $('form input[type=submit]').click();
