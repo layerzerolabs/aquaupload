@@ -4,7 +4,7 @@ $(function() {
   $(document).ajaxSend(function(e, xhr, options) {
     xhr.setRequestHeader("x-api-key", 'OoheiN8uyaiB7Iefahloo3aZAu3Ahnah');
   });
-    
+
   var app = new Marionette.Application();
   
   // Controls the message bar at the top of the page
@@ -26,8 +26,7 @@ $(function() {
       savedData: "#saved-data"
     },
   });
-
-  // The only model used
+ 
   var Reading = Backbone.Model.extend({
     urlRoot: 'http://localhost:8003/todmorden',
   });
@@ -39,7 +38,20 @@ $(function() {
 
   // The upload form
   var FormView = Marionette.ItemView.extend({
+    populateDropdown: function() {
+      $('[name=sensor_name]').after('<img src="ajax-loader.gif">');
+      $.ajax({
+        url: 'http://localhost:8003/todmorden/categories/',
+        success: function(data) {
+          data.forEach(function(category) {
+            $('select').append('<option value = "' + category + '">' + category + '</option>');
+          });
+          $('img').remove();
+        }
+      });
+    },
     onRender: function() {
+      this.populateDropdown();
       this.$('[name=reading_date]').datepicker({dateFormat: 'd M yy'});
       // Couldn't use backbone.validation because the separate inputs for date, hour and minutes
       // mean that the form elements don't correspond to the model attributes. So using jQuery.validate
