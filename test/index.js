@@ -6,12 +6,20 @@ describe('Form', function() {
   it('Should appear on page', function() {
     expect($('form').length).to.equal(1);
   });
-  it('Should have 5 text inputs', function() {
-    expect($('form input[type=text]').length).to.equal(5);
+  it('Should have 4 text inputs', function() {
+    expect($('form input[type=text]').length).to.equal(4);
+  });
+  it('Should have a select', function() {
+    expect($('form select').length).to.equal(1);
   });
   it('Should have a datepicker', function() {
     expect($('.ui-datepicker').length).to.equal(1);
-
+  });
+  it('Datepicker should be on the reading_date field', function() {
+    expect($('.hasDatepicker[name=reading_date]').length).to.equal(1);
+  });
+  it('Reading date field should default to today', function() {
+    expect($('[name=reading_date]').val()).to.equal(moment().format('D MMM YYYY'));
   });
   it('Should have a submit button', function() {
     expect($('form input[type=submit]').length).to.equal(1);
@@ -24,34 +32,29 @@ describe('Saved data table', function() {
   });
 });
 describe('Form validation', function() {
-  it('All fields should be required', function() {
+  it('Sensor name should be required', function() {
     $('form input[type=submit]').click();
-    expect($('input.error').length).to.equal(5);
-  });
-  it('Reading date should have to be valid date', function() {
-    $('[name=reading_date]').val('foo');
-    $('form input[type=submit]').click();
-    expect($('input.error').length).to.equal(5);
+    expect($('[name=sensor_name].error').length).to.equal(1);
   });
   it('Hours should have to be number', function() {
     $('[name=reading_hours]').val('foo');
     $('form input[type=submit]').click();
-    expect($('input.error').length).to.equal(5);
+    expect($('[name=reading_hours].error').length).to.equal(1);
   });
   it('Hours should have to be between 0 and 23', function() {
     $('[name=reading_hours]').val(24);
     $('form input[type=submit]').click();
-    expect($('input.error').length).to.equal(5);
+    expect($('[name=reading_hours].error').length).to.equal(1);
   });
   it('Minutes should have to be number', function() {
     $('[name=reading_hours]').val('foo');
     $('form input[type=submit]').click();
-    expect($('input.error').length).to.equal(5);
+    expect($('[name=reading_minutes].error').length).to.equal(1);
   });
   it('Minutes should have to be between 0 and 59', function() {
     $('[name=reading_minutes]').val(60);
     $('form input[type=submit]').click();
-    expect($('input.error').length).to.equal(5);
+    expect($('[name=reading_minutes].error').length).to.equal(1);
   });
 });
 
@@ -72,6 +75,9 @@ describe('On submitting form with valid data', function() {
     server = sinon.fakeServer.create();
     sinon.spy($, "ajax");
     $('[name=sensor_name]').val(sensor_name);
+    console.log(sensor_name);
+    console.log($('select').val());
+    console.log($('[name=sensor_name]').val());
     $('[name=reading_date]').val(reading_date);
     $('[name=reading_hours]').val(reading_hours);
     $('[name=reading_minutes]').val(reading_minutes);
@@ -79,7 +85,7 @@ describe('On submitting form with valid data', function() {
   });
   it('Should not show validation errors', function() {
     $('form input[type=submit]').click();
-    expect($('input.error').length).to.equal(0);
+    expect($('input.error, select.error').length).to.equal(0);
   });
   it('Should fire an ajax request', function() {
     $('form input[type=submit]').click();
@@ -131,12 +137,19 @@ describe('On submitting form with valid data', function() {
           '{"id": '+Math.floor(Math.random()*1000)+ '}'
       ]);
     }); 
-    it('should clear form', function() {
+    it('should clear dropdown', function() {
       $('form input[type=submit]').click();
       server.respond();
-      $('form input[type=text]').each(function() {
-        expect($(this).val()).to.equal('');
-      });
+      expect($('[name=sensor_name]').val()).to.equal('');
+    });
+    it('should clear reading_value', function() {
+      $('form input[type=submit]').click();
+      expect($('[name=reading_value]').val()).to.equal('');
+    });
+    it('should clear time', function() {
+      $('form input[type=submit]').click();
+      expect($('[name=reading_hours]').val()).to.equal('');
+      expect($('[name=reading_minutes]').val()).to.equal('');
     });
     it('should display success message', function() {
       expect($('#message').hasClass('success')).to.be.true;

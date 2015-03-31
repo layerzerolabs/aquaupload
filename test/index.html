@@ -20,8 +20,11 @@
   </script>
   <script id="form-template" type="text/template">
     <form>
-      <input type=text name="sensor_name">
-      <input type=text name="reading_date">
+      <select name="sensor_name">
+        <option value = ''> -- </option>
+        <option value='Fires'>foo</option>
+      </select>
+      <input readonly type=text name="reading_date" value="<%= moment().format('D MMM YYYY') %>">
       <input type=text name="reading_hours">
       <input type=text name="reading_minutes">
       <input type=text name="reading_value">

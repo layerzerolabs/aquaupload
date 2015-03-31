@@ -16,10 +16,12 @@
   <script id="form-template" type="text/template">
     <form>
       <div class='fieldwrapper'>
-        <label>Measurement of:</label><input type=text name="sensor_name">
+        <label>Measurement of:</label>
+        <select name="sensor_name"><option value = ''> -- </option><option value='foo'>foo</option></select>
       </div>
       <div class='fieldwrapper'>
-        <label>Date:</label><input type=text name="reading_date">
+        <label>Date:</label>
+        <input readonly type=text name="reading_date" value="<%= moment().format('D MMM YYYY') %>">
       </div>
       <div class='fieldwrapper'>
         <label>Time:</label>

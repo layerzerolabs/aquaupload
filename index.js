@@ -1,9 +1,5 @@
 $(function() {
 
-  jQuery.validator.addMethod("DD MMM YYYY", function(value, element) {
-      return this.optional(element) || moment(value, 'D MMM YYYY', true).isValid();
-  }, "Date format: 1 Jan 2001");
-
   // Send api key with every request
   $(document).ajaxSend(function(e, xhr, options) {
     xhr.setRequestHeader("x-api-key", 'OoheiN8uyaiB7Iefahloo3aZAu3Ahnah');
@@ -44,7 +40,7 @@ $(function() {
   // The upload form
   var FormView = Marionette.ItemView.extend({
     onRender: function() {
-      this.$('input').eq(1).datepicker({dateFormat: 'd M yy'});
+      this.$('[name=reading_date]').datepicker({dateFormat: 'd M yy'});
       // Couldn't use backbone.validation because the separate inputs for date, hour and minutes
       // mean that the form elements don't correspond to the model attributes. So using jQuery.validate
       this.$('form').validate({
@@ -61,10 +57,6 @@ $(function() {
         rules: {
           sensor_name: {
             required: true
-          },
-          reading_date: {
-            required: true,
-            'DD MMM YYYY': true
           },
           reading_hours: {
             required: true,
