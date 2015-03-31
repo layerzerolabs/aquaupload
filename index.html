@@ -7,11 +7,15 @@
   <link rel='stylesheet' href = "style.css" />
 </head>
 <body>
+  <h1>Data Upload</h1>
   <div id ="message"></div>
-  <div id="content"></div>
+  <div id="content"><!--html output from templates will go here--></div>
   <script id="layout-template" type="text/template">
     <div id = "form"></div>
-    <div id = "saved-data"></div>
+    <div id = 'output'>
+      <h2>Recent Entries</h2>
+      <div id = "saved-data"></div>
+    </div>
   </script>
   <script id="form-template" type="text/template">
     <form>
@@ -24,7 +28,7 @@
         <input readonly type=text name="reading_date" value="<%= moment().format('D MMM YYYY') %>">
       </div>
       <div class='fieldwrapper'>
-        <label>Time:</label>
+        <label>Time (24 hour clock):</label>
         <input class='time' type=text name="reading_hours" maxlength='2'>
         :
         <input class='time' type=text name="reading_minutes" maxlength='2'>
@@ -39,7 +43,7 @@
   </script>
   <script id="saved-data-template" type="text/template">
    <td class='data'><%= sensor_name %></td>
-   <td class='data'><%= moment(reading_time).format('D MMM YYYY H:mm') %></td>
+   <td class='data'><%= moment(reading_time).format('D MMM YYYY HH:mm') %></td>
    <td class='data'><%= reading_value %></td>
    <td><button class="delete">Delete</button></td> 
   </script>

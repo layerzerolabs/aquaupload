@@ -3,7 +3,7 @@
   overflow: hidden;
 }
 
-#form, #saved-data {
+#form, #output {
   margin-top: 20px;
   float: left;
   min-width: 200px;
@@ -13,11 +13,19 @@
   background-color: lightgray;
 }
 
+h1, h2 {
+  text-align: center;
+}
+
+h2 {
+  margin-top: 0;
+}
+
 #form {
   width: 25%;
 }
 
-#saved-data {
+#output {
   width: 50%;
 }
 
@@ -29,11 +37,11 @@ tr {
   padding: 5px;
 }
 
-#saved-data tr:nth-child(odd) {
+#output tr:nth-child(odd) {
   background-color: #ededed;
 }
 
-#saved-data tr:nth-child(even) {
+#output tr:nth-child(even) {
   background-color: #e4f1fb;
 }
 
@@ -47,23 +55,24 @@ td {
   text-align: center;
 }
 
-button.delete {
-  color: blue;
+button.delete, input[type=submit] {
+  background-color: #e4f1fb;
+  color: #222222;
 }
-
+ 
 #form div.fieldwrapper {
   padding: 10px;
   height: 60px;
 }
 
-input {
+input, button {
   padding: 5px;
 }
 
 input[type=submit] {
   margin-top: 10px;
-  color: blue;
 }
+
 input.time {
   width: 20px;
 }
