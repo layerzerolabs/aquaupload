@@ -27,6 +27,21 @@ describe('Form', function() {
   it('Should have a submit button', function() {
     expect($('form input[type=submit]').length).to.equal(1);
   });
+  it('Selecting Add New should bring up a text box for entering new sensor name', function() {
+    $('select').val('new');
+    $('select').change();
+    expect($('form input[type=text][name=new]').length).to.equal(1);
+  });
+  it('It should also remove the select', function() {
+    expect($('select').length).to.equal(0);
+  });
+  it('Clicking close should remove the text box', function() {
+    $('#close').click();
+    expect($('form input[type=text][name=new]').length).to.equal(0);
+  });
+  it('And should put the select back', function() {
+    expect($('select').length).to.equal(1);
+  });
 });
 
 describe('Saved data table', function() {

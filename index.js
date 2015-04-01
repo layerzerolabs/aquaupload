@@ -51,11 +51,30 @@ $(function() {
         }
       });
     },
-    onRender: function() {
-      this.populateDropdown();
-      this.$('[name=reading_date]').datepicker({dateFormat: 'd M yy'});
+    validationRules: {
+      sensor_name: {
+        required: true
+      },
+      reading_hours: {
+        required: true,
+        number: true,
+        min: 0,
+        max: 23
+      },
+      reading_minutes: {
+        required: true,
+        number: true,
+        min: 0,
+        max: 59
+      },
+      reading_value: {
+        required: true
+      }
+    },
+    applyFormValidation: function() {
       // Couldn't use backbone.validation because the separate inputs for date, hour and minutes
       // mean that the form elements don't correspond to the model attributes. So using jQuery.validate
+      var that = this;
       this.$('form').validate({
         groups: {
           reading_time: 'reading_minutes reading_hours'
@@ -67,31 +86,19 @@ $(function() {
             error.insertAfter(element);
           }
         },
-        rules: {
-          sensor_name: {
-            required: true
-          },
-          reading_hours: {
-            required: true,
-            number: true,
-            min: 0,
-            max: 23
-          },
-          reading_minutes: {
-            required: true,
-            number: true,
-            min: 0,
-            max: 59
-          },
-          reading_value: {
-            required: true
-          }
-        }
+        rules: that.validationRules 
       });
+    },
+    onRender: function() {
+      this.populateDropdown();
+      this.$('[name=reading_date]').datepicker({dateFormat: 'd M yy'});
+      this.applyFormValidation();
     },
     template: '#form-template', 
     events: {
-      'submit form': 'uploadData'
+      'submit form': 'uploadData',
+      'change select': 'perhapsShowTextBox',
+      'click #close': 'closeTextBox',
     },
     // Parse the multiple date-time parts into a date object with time
     uploadData: function(e) {
@@ -114,6 +121,18 @@ $(function() {
           showMessage('error', 'Not Saved');
         }
       });
+    },
+    perhapsShowTextBox: function(e) {
+      this.savedSelect = this.$('select');
+      if ($(e.target).val() === 'new') {
+        this.$('select').replaceWith(
+          '<div id=new><input type=text name=new><button id=close>Close</button></div'
+        );
+      }
+    },
+    closeTextBox: function() {
+      this.$('#new').replaceWith(this.savedSelect);
+      this.$('select').val('');
     }
   });
 
