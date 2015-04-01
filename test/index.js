@@ -62,7 +62,7 @@ describe('On submitting form with valid data', function() {
   var server;
 
   // data to input
-  var sensor_name = 'Fires',
+  var sensor_name = 'Blah Blah Sensor',
     reading_date = '3 Jan 2000',
     reading_hours = 13,
     reading_minutes = 20,
@@ -74,10 +74,11 @@ describe('On submitting form with valid data', function() {
   before(function() {
     server = sinon.fakeServer.create();
     sinon.spy($, "ajax");
+
+    // Dropdown populates from server on page load (untested) so we can't predict what it will
+    // contain and therefore must add an option.
+    $('[name=sensor_name]').append('<option value = "' + sensor_name + '"></option>');
     $('[name=sensor_name]').val(sensor_name);
-    console.log(sensor_name);
-    console.log($('select').val());
-    console.log($('[name=sensor_name]').val());
     $('[name=reading_date]').val(reading_date);
     $('[name=reading_hours]').val(reading_hours);
     $('[name=reading_minutes]').val(reading_minutes);
