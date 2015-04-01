@@ -97,8 +97,7 @@ $(function() {
     template: '#form-template', 
     events: {
       'submit form': 'uploadData',
-      'change select': 'perhapsShowTextBox',
-      'click #close': 'closeTextBox',
+      'change select': 'perhapsShowTextBox'
     },
     // Parse the multiple date-time parts into a date object with time
     uploadData: function(e) {
@@ -116,6 +115,7 @@ $(function() {
           showMessage('success', 'Saved');
           savedData.add(that.model);
           that.$('form')[0].reset();
+          that.closeTextBox();
         },
         error: function(err, res) {
           showMessage('error', 'Not Saved');
@@ -123,11 +123,13 @@ $(function() {
       });
     },
     perhapsShowTextBox: function(e) {
+      var that = this;
       this.savedSelect = this.$('select');
       if ($(e.target).val() === 'new') {
         this.$('select').replaceWith(
-          '<div id=new><input type=text name=new><button id=close>Close</button></div'
+          '<div id=new><input type=text name=sensor_name></div'
         );
+        that.applyFormValidation();
       }
     },
     closeTextBox: function() {

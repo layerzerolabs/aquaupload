@@ -55,7 +55,7 @@ td {
   text-align: center;
 }
 
-button.delete, input[type=submit] {
+button, input[type=submit] {
   background-color: #e4f1fb;
   color: #222222;
 }

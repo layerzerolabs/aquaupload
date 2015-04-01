@@ -30,17 +30,10 @@ describe('Form', function() {
   it('Selecting Add New should bring up a text box for entering new sensor name', function() {
     $('select').val('new');
     $('select').change();
-    expect($('form input[type=text][name=new]').length).to.equal(1);
+    expect($('form input[type=text][name=sensor_name]').length).to.equal(1);
   });
   it('It should also remove the select', function() {
     expect($('select').length).to.equal(0);
-  });
-  it('Clicking close should remove the text box', function() {
-    $('#close').click();
-    expect($('form input[type=text][name=new]').length).to.equal(0);
-  });
-  it('And should put the select back', function() {
-    expect($('select').length).to.equal(1);
   });
 });
 
@@ -194,6 +187,7 @@ describe('On submitting form with valid data', function() {
       expect($('#saved-data td').eq(2).html()).to.equal(reading_value);
     });
     it('Submitting form again should create another row', function() {
+      $('[name=sensor_name]').append('<option value = "' + sensor_name + '"></option>');
       $('[name=sensor_name]').val(sensor_name);
       $('[name=reading_date]').val(reading_date);
       $('[name=reading_hours]').val(reading_hours);
@@ -202,6 +196,25 @@ describe('On submitting form with valid data', function() {
       $('form input[type=submit]').click();
       server.respond();
       expect($('#saved-data tr').length).to.equal(2);
+    });
+    it('Submitting form after selecting Add New and entering text should create another row', function() {
+      $('[name=sensor_name]').val('new');
+      $('[name=sensor_name]').change();
+      $('input[type=text]').eq(0).val(sensor_name);
+      $('[name=reading_date]').val(reading_date);
+      $('[name=reading_hours]').val(reading_hours);
+      $('[name=reading_minutes]').val(reading_minutes);
+      $('[name=reading_value]').val(reading_value);
+      $('form input[type=submit]').click();
+      server.respond();
+      expect($('#saved-data tr').length).to.equal(3);
+    });
+    it('Should also close text box and replace with select', function() {
+      expect($('form input[type=text][name=sensor_name]').length).to.equal(0);
+      expect($('form select').length).to.equal(1);
+    });
+    it('Sensor name should be pulled from textbox not dropdown', function() {
+      expect($('#saved-data tr').eq(2).find('td').eq(0).html()).to.equal(sensor_name);
     });
     describe('Deleting saved data', function() {
       it('Clicking delete should send an ajax DELETE request', function() {
@@ -212,7 +225,7 @@ describe('On submitting form with valid data', function() {
       it('But should not remove the item if it returns an error', function() {
         server.respondWith([405, {'Content-Type': 'text/html'}, '{"error": "foo"}']);
         server.respond();
-        expect($('#saved-data tr').length).to.equal(2);
+        expect($('#saved-data tr').length).to.equal(3);
       });
       it('And should show error message', function() {
         expect($('#message').hasClass('error')).to.be.true;
@@ -223,7 +236,7 @@ describe('On submitting form with valid data', function() {
         server.respondWith([200, {'Content-Type': 'text/html'}, '{"it\'s": "gone"}']);
         $('#saved-data td').eq(3).find('button.delete').click();
         server.respond();
-        expect($('#saved-data tr').length).to.equal(1);
+        expect($('#saved-data tr').length).to.equal(2);
       });
       it('And should show success message', function() {
         expect($('#message').hasClass('error')).to.be.false;
