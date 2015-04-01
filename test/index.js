@@ -12,6 +12,9 @@ describe('Form', function() {
   it('Should have a select', function() {
     expect($('form select').length).to.equal(1);
   });
+  it('Select should contain option for Add New Sensor Name', function() {
+    expect($('form select option[value=new]').length).to.equal(1);
+  });
   it('Should have a datepicker', function() {
     expect($('.ui-datepicker').length).to.equal(1);
   });

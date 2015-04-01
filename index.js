@@ -44,7 +44,8 @@ $(function() {
         url: 'http://localhost:8003/todmorden/categories/',
         success: function(data) {
           data.forEach(function(category) {
-            $('select').append('<option value = "' + category + '">' + category + '</option>');
+            // Keep the last option ("Add New") at the bottom
+            $('select option:last').before('<option value = "' + category + '">' + category + '</option>');
           });
           $('img').remove();
         }
