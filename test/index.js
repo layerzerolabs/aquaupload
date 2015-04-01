@@ -200,7 +200,7 @@ describe('On submitting form with valid data', function() {
     it('Submitting form after selecting Add New and entering text should create another row', function() {
       $('[name=sensor_name]').val('new');
       $('[name=sensor_name]').change();
-      $('input[type=text]').eq(0).val(sensor_name);
+      $('input[type=text]').eq(0).val('A new one');
       $('[name=reading_date]').val(reading_date);
       $('[name=reading_hours]').val(reading_hours);
       $('[name=reading_minutes]').val(reading_minutes);
@@ -209,12 +209,16 @@ describe('On submitting form with valid data', function() {
       server.respond();
       expect($('#saved-data tr').length).to.equal(3);
     });
+    it('Should now have the new sensor name as a choice in the dropdown', function() {
+      $('form select option').each(function(){console.log($(this).val());});
+      expect($('form select option[value="A new one"]').length).to.equal(1);
+    });
     it('Should also close text box and replace with select', function() {
       expect($('form input[type=text][name=sensor_name]').length).to.equal(0);
       expect($('form select').length).to.equal(1);
     });
     it('Sensor name should be pulled from textbox not dropdown', function() {
-      expect($('#saved-data tr').eq(2).find('td').eq(0).html()).to.equal(sensor_name);
+      expect($('#saved-data tr').eq(2).find('td').eq(0).html()).to.equal('A new one');
     });
     describe('Deleting saved data', function() {
       it('Clicking delete should send an ajax DELETE request', function() {

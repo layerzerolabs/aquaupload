@@ -99,6 +99,10 @@ $(function() {
       'submit form': 'uploadData',
       'change select': 'perhapsShowTextBox'
     },
+    addNewNameToOptions: function() {
+      var category = this.model.get('sensor_name');
+      $('select option:last').before('<option value = "' + category + '">' + category + '</option>');
+    },
     // Parse the multiple date-time parts into a date object with time
     uploadData: function(e) {
       e.preventDefault();
@@ -115,7 +119,11 @@ $(function() {
           showMessage('success', 'Saved');
           savedData.add(that.model);
           that.$('form')[0].reset();
-          that.closeTextBox();
+          if (that.sensorNameIsNew) {
+            that.closeTextBox();
+            that.addNewNameToOptions();
+            that.sensorNameIsNew = false;
+          }
         },
         error: function(err, res) {
           showMessage('error', 'Not Saved');
@@ -129,6 +137,7 @@ $(function() {
         this.$('select').replaceWith(
           '<div id=new><input type=text name=sensor_name></div'
         );
+        that.sensorNameIsNew = true;
         that.applyFormValidation();
       }
     },
